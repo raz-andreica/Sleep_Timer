@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0CFFFFFF"
+    tools:context=".SleepTimer">
+
+    <RelativeLayout
+        android:id="@+id/rLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:elevation="7dp"
+            android:fontFamily="casual"
+            android:text="@string/_initialTextString"
+            android:textColor="#E91E63"
+            android:textSize="80sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/progressCircle"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="340dp"
+            android:layout_height="340dp"
+            android:layout_centerInParent="true"
+            android:elevation="7dp"
+            android:max="60"
+            android:progress="0"
+            android:progressDrawable="@drawable/ring"
+            android:progressTint="#3F51B5"
+            android:rotation="270" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/centerButton"
+            android:layout_width="331dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:backgroundTint="#FFEB3B"
+            android:clickable="true"
+            android:elevation="0dp"
+            android:focusable="true"
+            app:backgroundTint="#00BCD4"
+            app:borderWidth="30dp"
+            app:srcCompat="@drawable/ring" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/slider"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/progressCircle"
+            android:layout_centerInParent="false"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
+            android:clickable="false"
+            android:elevation="14dp"
+            app:srcCompat="@drawable/ring" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
