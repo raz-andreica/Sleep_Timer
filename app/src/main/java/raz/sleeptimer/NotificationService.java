@@ -16,7 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-public class TimerService extends Service
+public class NotificationService extends Service
 {
     private static final String TAG_TIMER_SERVICE = "Alarm service";
     public static final String ACTION_START_TIMER_SERVICE = "ACTION_START_ALARM_SERVICE";
@@ -32,6 +32,7 @@ public class TimerService extends Service
 
     private static CountDownTimer timer;
     private int minutes;
+    private boolean paused = false;
 
     @Override
     public IBinder onBind(Intent intent)
@@ -132,21 +133,21 @@ public class TimerService extends Service
         builder.setFullScreenIntent(pendingIntent, true);
 
         // Add Resume button intent in notification.
-        Intent resumeIntent = new Intent(this, TimerService.class);
+        Intent resumeIntent = new Intent(this, NotificationService.class);
         resumeIntent.setAction(ACTION_RESUME_TIMER);
         PendingIntent pendingResumeIntent = PendingIntent.getService(this, 0, resumeIntent, 0);
         NotificationCompat.Action playAction = new NotificationCompat.Action(android.R.drawable.ic_media_play, "Resume", pendingResumeIntent);
         builder.addAction(playAction);
 
         // Add Pause button intent in notification.
-        Intent pauseIntent = new Intent(this, TimerService.class);
+        Intent pauseIntent = new Intent(this, NotificationService.class);
         pauseIntent.setAction(ACTION_PAUSE_TIMER);
         PendingIntent pendingPauseIntent = PendingIntent.getService(this, 0, pauseIntent, 0);
         NotificationCompat.Action prevAction = new NotificationCompat.Action(android.R.drawable.ic_media_pause, "Pause", pendingPauseIntent);
         builder.addAction(prevAction);
 
         // Add Extend button intent in notification.
-        Intent extendIntent = new Intent(this, TimerService.class);
+        Intent extendIntent = new Intent(this, NotificationService.class);
         extendIntent.setAction(ACTION_EXTEND_TIMER);
         PendingIntent pendingExtendIntent = PendingIntent.getService(this, 0, extendIntent, 0);
         NotificationCompat.Action extendAction = new NotificationCompat.Action(android.R.drawable.ic_media_pause, "Extend", pendingExtendIntent);
@@ -202,16 +203,18 @@ public class TimerService extends Service
     private void startTimer()
     {
         if (timer != null) timer.cancel();
+        TileService.setActive();
 
-        timer = new CountDownTimer(minutes * 60000, 60000)
+        timer = new CountDownTimer(minutes * 1000, 1000)
 
         {
             @Override
             public void onTick(long millisUntilFinished)
             {
+
                 minutes--;
 
-//                SleepTimer.setTimerMinutes(minutes);
+                SleepTimer.setTimerMinutes(minutes);
                 updateNotifications();
             }
 
@@ -225,7 +228,9 @@ public class TimerService extends Service
 
     public void pauseTimer()
     {
+        paused = true;
         timer.cancel();
+        TileService.setInactive();
 
         bigTextStyle.setBigContentTitle("Timer paused");
         Notification notification = builder.build();
@@ -234,9 +239,9 @@ public class TimerService extends Service
 
     public class timerBinder extends Binder
     {
-        TimerService getService()
+        NotificationService getService()
         {
-            return TimerService.this;
+            return NotificationService.this;
 
         }
     }

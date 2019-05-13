@@ -21,7 +21,7 @@
         </activity>
 
         <service
-            android:name="raz.sleeptimer.TimerService"
+            android:name="raz.sleeptimer.NotificationService"
             android:enabled="true"
             android:exported="true" />
 

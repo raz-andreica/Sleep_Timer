@@ -44,7 +44,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/centerButton"
-            android:layout_width="331dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:backgroundTint="#FFEB3B"
@@ -65,6 +65,7 @@
             android:layout_centerVertical="false"
             android:clickable="false"
             android:elevation="14dp"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ring" />
 
     </RelativeLayout>

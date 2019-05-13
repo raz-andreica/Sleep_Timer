@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SleepTimer extends AppCompatActivity
 {
@@ -85,6 +86,7 @@ private FloatingActionButton slider, centerButton;
             timerMinutes = 59;
 
             startTimerService();
+            TileService.setActive();
         }
     }
 
@@ -115,8 +117,8 @@ private FloatingActionButton slider, centerButton;
 
     public void startTimerService()
     {
-        Intent i = new Intent(SleepTimer.this, TimerService.class);
-        i.setAction(TimerService.ACTION_START_TIMER_SERVICE);
+        Intent i = new Intent(SleepTimer.this, NotificationService.class);
+        i.setAction(NotificationService.ACTION_START_TIMER_SERVICE);
         i.putExtra("minutes", timerMinutes);
         startService(i);
     }
@@ -127,19 +129,27 @@ private FloatingActionButton slider, centerButton;
         float x, y;
         float radius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, getResources().getDisplayMetrics());
 
-        if (Math.sqrt(Math.pow(xTouch - xCenter, 2) + Math.pow(yTouch - yCenter, 2)) >= radius)
-        {
-            x = (float) (xCenter + radius * (xTouch - xCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
-            y = (float) (yCenter + radius * (yTouch - yCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
+//        if (Math.sqrt(Math.pow(xTouch - xCenter, 2) + Math.pow(yTouch - yCenter, 2)) >= radius)
+//        {
+//            x = (float) (xCenter + radius * (xTouch - xCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
+//            y = (float) (yCenter + radius * (yTouch - yCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
+//
+//            slider.setX(x - slider.getWidth() / 2);
+//            slider.setY(y - slider.getHeight() / 2);
+//
+//            if (timerMinutes > 1 && timerMinutes < 15) progressCircle.setProgress(timerMinutes + 1);
+//            else if (timerMinutes > 30 && timerMinutes < 40) progressCircle.setProgress(timerMinutes - 2);
+//            else if (timerMinutes > 23 && timerMinutes < 53) progressCircle.setProgress(timerMinutes - 1);
+//            else progressCircle.setProgress(timerMinutes);
+//        }
 
-            slider.setX(x - slider.getWidth() / 2);
-            slider.setY(y - slider.getHeight() / 2);
+        x = (float) (xCenter + radius * (xTouch - xCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
+        y = (float) (yCenter + radius * (yTouch - yCenter) / Math.sqrt((xTouch - xCenter) * (xTouch - xCenter) + (yTouch - yCenter) * (yTouch - yCenter)));
 
-            if (timerMinutes > 1 && timerMinutes < 15) progressCircle.setProgress(timerMinutes + 1);
-            else if (timerMinutes > 30 && timerMinutes < 40) progressCircle.setProgress(timerMinutes - 2);
-            else if (timerMinutes > 23 && timerMinutes < 53) progressCircle.setProgress(timerMinutes - 1);
-            else progressCircle.setProgress(timerMinutes);
-        }
+        slider.setX(x - slider.getWidth() / 2);
+        slider.setY(y - slider.getHeight() / 2);
+
+        progressCircle.setProgress(timerMinutes);
     }
 
     //Converts the slider's location relative to the center to a 0-360 circle angle
@@ -152,6 +162,37 @@ private FloatingActionButton slider, centerButton;
 
         if (angle < 0) return (angle + 360);
         else return angle;
+    }
+
+    private int getAngleX()
+    {
+        int x = 0;
+
+        x = (int) Math.cos( Math.toDegrees(Math.atan2(
+                ((slider.getY() - yCenter) / Math.sqrt(Math.pow(slider.getX() - xCenter, 2) + (Math.pow(slider.getY() - yCenter, 2)))),
+                ((slider.getX() - xCenter) / Math.sqrt(Math.pow(slider.getX() - xCenter, 2) + (Math.pow(slider.getY() - yCenter, 2))))
+        )));
+        Toast.makeText(getApplicationContext(), Double.toString(getAngle()), Toast.LENGTH_LONG).show();
+
+        return x;
+    }
+
+    private int getAngleY()
+    {
+        int y = 0;
+
+        //y = (int) Math.sin();
+
+        return y;
+    }
+
+    private void setSlider(int x, int y)
+    {
+        x = getAngleX();
+        y = getAngleY();
+
+        slider.setX(x);
+        slider.setY(y);
     }
 
     //Converts an angle to a 1-60 minutes clock
@@ -192,6 +233,7 @@ private FloatingActionButton slider, centerButton;
                             {
                                 rotateSlider();
                                 text.setText(Integer.toString(timerMinutes));
+                                getAngleX();
                             }
                         });
                         Thread.sleep(100);

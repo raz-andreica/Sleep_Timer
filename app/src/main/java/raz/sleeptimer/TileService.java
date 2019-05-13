@@ -5,7 +5,7 @@ import android.service.quicksettings.Tile;
 
 public class TileService extends android.service.quicksettings.TileService
 {
-    Tile tile;
+    static private Tile tile;
 
     @Override
     public void onDestroy()
@@ -31,7 +31,7 @@ public class TileService extends android.service.quicksettings.TileService
         super.onStartListening();
 
         tile = getQsTile();
-        tile.setState(Tile.STATE_ACTIVE);
+        tile.setState(Tile.STATE_INACTIVE);
         tile.updateTile();
     }
 
@@ -52,5 +52,29 @@ public class TileService extends android.service.quicksettings.TileService
 
         //Start main activity
         startActivityAndCollapse(new Intent(this, SleepTimer.class));
+    }
+
+    static public void setActive()
+    {
+        try {
+            tile.setState(Tile.STATE_ACTIVE);
+            tile.updateTile();
+        }
+        catch (NullPointerException ex)
+        {
+            //TODO
+        }
+    }
+
+    static public void setInactive()
+    {
+        try {
+            tile.setState(Tile.STATE_INACTIVE);
+            tile.updateTile();
+        }
+        catch (NullPointerException ex)
+        {
+            //TODO
+        }
     }
 }
