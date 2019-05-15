@@ -32,8 +32,8 @@
         <ProgressBar
             android:id="@+id/progressCircle"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="340dp"
-            android:layout_height="340dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_centerInParent="true"
             android:elevation="7dp"
             android:max="60"
@@ -44,7 +44,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/centerButton"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:backgroundTint="#FFEB3B"

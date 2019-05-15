@@ -205,7 +205,7 @@ public class NotificationService extends Service
         if (timer != null) timer.cancel();
         TileService.setActive();
 
-        timer = new CountDownTimer(minutes * 1000, 1000)
+        timer = new CountDownTimer(minutes * 60000, 60000)
 
         {
             @Override
