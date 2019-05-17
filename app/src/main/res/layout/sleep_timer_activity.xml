@@ -48,24 +48,10 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:backgroundTint="#FFEB3B"
-            android:clickable="true"
             android:elevation="0dp"
-            android:focusable="true"
+            android:focusable="auto"
             app:backgroundTint="#00BCD4"
             app:borderWidth="30dp"
-            app:srcCompat="@drawable/ring" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/slider"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignTop="@id/progressCircle"
-            android:layout_centerInParent="false"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="false"
-            android:clickable="false"
-            android:elevation="14dp"
-            android:visibility="invisible"
             app:srcCompat="@drawable/ring" />
 
     </RelativeLayout>

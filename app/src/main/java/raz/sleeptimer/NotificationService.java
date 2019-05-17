@@ -86,15 +86,15 @@ public class NotificationService extends Service
                     break;
                 case ACTION_RESUME_TIMER:
                     startTimer();
-                    Toast.makeText(getApplicationContext(), "Timer resumed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Timer resumed", Toast.LENGTH_SHORT).show();
                     break;
                 case ACTION_PAUSE_TIMER:
                     pauseTimer();
-                    Toast.makeText(getApplicationContext(), "Timer paused", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Timer paused", Toast.LENGTH_SHORT).show();
                     break;
                 case ACTION_EXTEND_TIMER:
                 extendTimer(10);
-                Toast.makeText(getApplicationContext(), "Timer extended to " + minutes + " minutes", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Timer extended to " + minutes + " minutes", Toast.LENGTH_SHORT).show();
                 break;
             }
         }
@@ -214,7 +214,7 @@ public class NotificationService extends Service
 
                 minutes--;
 
-                SleepTimer.setTimerMinutes(minutes);
+                SleepTimer.setMinutes(minutes);
                 updateNotifications();
             }
 
