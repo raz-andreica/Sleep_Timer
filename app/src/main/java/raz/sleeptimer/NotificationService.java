@@ -32,7 +32,6 @@ public class NotificationService extends Service
 
     private static CountDownTimer timer;
     private int minutes;
-    private boolean paused = false;
 
     @Override
     public IBinder onBind(Intent intent)
@@ -78,11 +77,10 @@ public class NotificationService extends Service
                 case ACTION_START_TIMER_SERVICE:
                     startTimerService();
                     startTimer();
-//                    Toast.makeText(getApplicationContext(), "Timer service started.", Toast.LENGTH_LONG).show();
                     break;
                 case ACTION_STOP_TIMER_SERVICE:
                     stopTimerService();
-//                    Toast.makeText(getApplicationContext(), "Timer service stopped.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Timer Finished.", Toast.LENGTH_LONG).show();
                     break;
                 case ACTION_RESUME_TIMER:
                     startTimer();
@@ -101,7 +99,6 @@ public class NotificationService extends Service
         return super.onStartCommand(intent, flags, startId);
     }
 
-    /* Used to build and start timer service. */
     private void startTimerService()
     {
         //Create notification channel
@@ -162,25 +159,15 @@ public class NotificationService extends Service
 
     private void updateNotifications()
     {
-        if (minutes == 0)
+        if ((minutes % 10 == 0) || (minutes < 5 && minutes > 0))
         {
-            Toast.makeText(getApplicationContext(),  "Timer finished", Toast.LENGTH_LONG).show();
-
-            bigTextStyle.setBigContentTitle("Timer finished");
-            bigTextStyle.bigText("Remaining time: " + minutes + " minutes.");
-            Notification notification = builder.build();
-            startForeground(1, notification);
-        }
-        else if ((minutes % 10 == 0) || (minutes < 5 && minutes > 0))
-        {
-            Toast.makeText(getApplicationContext(), minutes + " minutes remaining", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), minutes + " minutes remaining", Toast.LENGTH_SHORT).show();
         }
 
         bigTextStyle.setBigContentTitle("Timer running");
         bigTextStyle.bigText("Remaining time: " + minutes + " minutes.");
         Notification notification = builder.build();
         startForeground(1, notification);
-
     }
 
     private void stopTimerService()
@@ -202,7 +189,12 @@ public class NotificationService extends Service
 
     private void startTimer()
     {
-        if (timer != null) timer.cancel();
+        if (timer != null)
+        {
+            minutes++;
+            timer.cancel();
+        }
+
         TileService.setActive();
 
         timer = new CountDownTimer(minutes * 60000, 60000)
@@ -211,11 +203,10 @@ public class NotificationService extends Service
             @Override
             public void onTick(long millisUntilFinished)
             {
-
-                minutes--;
-
                 SleepTimer.setMinutes(minutes);
                 updateNotifications();
+
+                minutes--;
             }
 
             @Override
@@ -228,7 +219,6 @@ public class NotificationService extends Service
 
     public void pauseTimer()
     {
-        paused = true;
         timer.cancel();
         TileService.setInactive();
 
@@ -242,7 +232,6 @@ public class NotificationService extends Service
         NotificationService getService()
         {
             return NotificationService.this;
-
         }
     }
 }

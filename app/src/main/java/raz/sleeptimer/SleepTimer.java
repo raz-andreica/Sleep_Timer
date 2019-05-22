@@ -15,7 +15,7 @@ public class SleepTimer extends AppCompatActivity
 {
     private boolean initialized = false;
     private static int minutes;
-    private int xTouch, yTouch, angle;
+    private static int xTouch, yTouch, angle;
     private static int xCenter, yCenter, radius;
 
     private RelativeLayout layout;
@@ -138,7 +138,7 @@ public class SleepTimer extends AppCompatActivity
     {
         if (!initialized)
         {
-            minutes = 30;
+            minutes = 44;
             radius = Math.round((float) progressCircle.getWidth() / 2);
             xCenter = Math.round(progressCircle.getX() + progressCircle.getWidth() / 2);
             yCenter = Math.round(progressCircle.getY() + progressCircle.getHeight() / 2);
@@ -156,17 +156,12 @@ public class SleepTimer extends AppCompatActivity
         progressCircle.setProgress(minutes);
     }
 
-    private void setTimer(int mins)
-    {
-        minutes = mins;
-        angle = CircleFunctions.clockToAngle(minutes);
-
-        progressCircle.setProgress(minutes);
-    }
-
     public static void setMinutes(int mins)
     {
         minutes = mins;
+        angle = CircleFunctions.clockToAngle(mins);
+        xTouch = CircleFunctions.angleToPoints(xCenter, yCenter, angle, radius).x;
+        yTouch = CircleFunctions.angleToPoints(xCenter, yCenter, angle, radius).y;
     }
 
     public void startTimerService()
